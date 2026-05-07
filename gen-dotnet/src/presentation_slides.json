@@ -1,0 +1,58 @@
+{
+    "slides": [
+        {
+            "slide_n": 1,
+            "title": "Example report Journey",
+            "subtitle": "Embracing Sustainability and Corporate Responsibility",
+            "text": "Join us as we delve into the 2022 Environmental, Social, and Governance  Report, a comprehensive overview of the company's approach to managing opportunities and risks.",
+            "speaker_notes": "Welcome the audience and introduce the Report, highlighting its importance in promoting transparency and accountability.",
+            "slideFormat": "Title page"
+        },
+        {
+            "slide_n": 2,
+            "title": "Today's agenda",
+            "speaker_notes": "this is nonesense.",
+            "slideFormat": "Agenda"
+        },
+        {
+            "slide_n": 3,
+            "title": "Governance for a Greener Future",
+            "subtitle": "Climate-Related Risk Management",
+            "text": "*** Company acknowledges the impacts of climate change on its operations. *** The company's CEO, Board of Directors, and Steering Committee oversee climate-related risks. *** Plans are underway to conduct a detailed climate scenario analysis in 2023/2024.",
+            "speaker_notes": "Discuss the overall governance structure for managing climate-related risks, emphasizing the involvement of senior leadership and the upcoming climate scenario analysis.",
+            "slideFormat": "Slide with bullet points"
+        },
+        {
+            "slide_n": 4,
+            "title": "Towards a Sustainable Future",
+            "subtitle": "Environmental Performance Highlights",
+            "text": "While the 2023 Report includes metrics for water, effluents, waste, and biodiversity, many of these environmental indicators are not yet available. The company aims to enhance its data collection and reporting processes in the coming years.",
+            "speaker_notes": "Highlight company's commitment to reporting on environmental performance, acknowledging the current data gaps and the company's plans to improve data collection and reporting.",
+            "slideFormat": "Slide with image and text"
+        },
+        {
+            "slide_n": 5,
+            "title": "Empowering Social Impact",
+            "subtitle": "Leveraging Technology for Good",
+            "text": "Company's products and services play a crucial role in enabling social impact for its customers. The company's focus on diversity, inclusion, and corporate governance also contributes to its overall social responsibility efforts.",
+            "speaker_notes": "Discuss company's social impact through its technology solutions and highlight the company's commitment to promoting diversity, inclusion, and strong corporate governance practices.",
+            "slideFormat": "Slide with image only"
+        },
+        {
+            "slide_n": 6,
+            "title": "Transparency and Accountability",
+            "subtitle": "Aligning with Global Standards",
+            "text": "*** The Report follows the Global Reporting Initiative (GRI) framework. *** It also adheres to the Sustainability Accounting Standards Board (SASB) standards. *** The report incorporates the Task Force on Climate-Related Financial Disclosures (TCFD) recommendations.",
+            "speaker_notes": "Emphasize company's commitment to transparency and accountability by aligning its reporting with globally recognized standards such as GRI, SASB, and TCFD.",
+            "slideFormat": "Slide with bullet points"
+        },
+        {
+            "slide_n": 7,
+            "title": "Key Takeaways",
+            "subtitle": "Company's Journey Continues",
+            "text": "*** Robust governance for climate-related risk management. *** Commitment to enhancing environmental data collection and reporting. *** Leveraging technology for social impact and corporate responsibility. *** Alignment with global reporting standards for transparency.",
+            "speaker_notes": "Summarize the key highlights from the presentation, emphasizing company's efforts to manage risks, promote sustainability, drive social impact, and maintain transparency through global reporting standards.",
+            "slideFormat": "Slide with 4 takeaways"
+        }
+    ]
+}

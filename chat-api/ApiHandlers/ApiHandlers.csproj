@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="*" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="*" />
+    <PackageReference Include="AWSSDK.BedrockRuntime" Version="*" />
+    <PackageReference Include="AWSSDK.Bedrock" Version="*" />
+    <PackageReference Include="AWSSDK.BedrockAgentRuntime" Version="*" />
+    <PackageReference Include="AWSSDK.BedrockAgent" Version="*" />
+    <PackageReference Include="AWSSDK.SecurityToken" Version="*" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "dgSpecHash": "u8X45SlA6jw=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ilunsf\\Documents\\AWS\\Blog\\PPT BR\\ppt-generator\\gen-dotnet\\src\\AgentProxy.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ilunsf\\.nuget\\packages\\amazon.lambda.annotations\\1.15.1\\amazon.lambda.annotations.1.15.1.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\amazon.lambda.core\\2.8.1\\amazon.lambda.core.2.8.1.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\amazon.lambda.serialization.systemtextjson\\2.4.4\\amazon.lambda.serialization.systemtextjson.2.4.4.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\awssdk.bedrock\\4.0.25.5\\awssdk.bedrock.4.0.25.5.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\awssdk.bedrockagentruntime\\4.0.8.22\\awssdk.bedrockagentruntime.4.0.8.22.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\awssdk.bedrockruntime\\4.0.17.6\\awssdk.bedrockruntime.4.0.17.6.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\awssdk.core\\4.0.6.1\\awssdk.core.4.0.6.1.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\awssdk.s3\\4.0.22.2\\awssdk.s3.4.0.22.2.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\documentformat.openxml\\3.3.0\\documentformat.openxml.3.3.0.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\documentformat.openxml.framework\\3.3.0\\documentformat.openxml.framework.3.3.0.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\json.more.net\\3.0.1\\json.more.net.3.0.1.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\jsonpointer.net\\7.0.1\\jsonpointer.net.7.0.1.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\jsonschema.net\\9.2.0\\jsonschema.net.9.2.0.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\system.io.packaging\\8.0.1\\system.io.packaging.8.0.1.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\microsoft.netcore.app.runtime.linux-x64\\8.0.26\\microsoft.netcore.app.runtime.linux-x64.8.0.26.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.linux-x64\\8.0.26\\microsoft.aspnetcore.app.runtime.linux-x64.8.0.26.nupkg.sha512",
+    "C:\\Users\\ilunsf\\.nuget\\packages\\microsoft.netcore.app.crossgen2.win-x64\\8.0.26\\microsoft.netcore.app.crossgen2.win-x64.8.0.26.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,291 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0/linux-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {},
+    ".NETCoreApp,Version=v8.0/linux-x64": {
+      "AgentProxy/1.0.0": {
+        "dependencies": {
+          "AWSSDK.Bedrock": "4.0.25.5",
+          "AWSSDK.BedrockAgentRuntime": "4.0.8.22",
+          "AWSSDK.BedrockRuntime": "4.0.17.6",
+          "AWSSDK.S3": "4.0.22.2",
+          "Amazon.Lambda.Annotations": "1.15.1",
+          "Amazon.Lambda.Core": "2.8.1",
+          "Amazon.Lambda.Serialization.SystemTextJson": "2.4.4",
+          "DocumentFormat.OpenXml": "3.3.0",
+          "JsonSchema.Net": "9.2.0"
+        },
+        "runtime": {
+          "AgentProxy.dll": {}
+        }
+      },
+      "Amazon.Lambda.Annotations/1.15.1": {
+        "dependencies": {
+          "Amazon.Lambda.Core": "2.8.1"
+        },
+        "runtime": {
+          "lib/net8.0/Amazon.Lambda.Annotations.dll": {
+            "assemblyVersion": "1.15.1.0",
+            "fileVersion": "1.15.1.0"
+          }
+        }
+      },
+      "Amazon.Lambda.Core/2.8.1": {
+        "runtime": {
+          "lib/net8.0/Amazon.Lambda.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Amazon.Lambda.Serialization.SystemTextJson/2.4.4": {
+        "dependencies": {
+          "Amazon.Lambda.Core": "2.8.1"
+        },
+        "runtime": {
+          "lib/net8.0/Amazon.Lambda.Serialization.SystemTextJson.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "AWSSDK.Bedrock/4.0.25.5": {
+        "dependencies": {
+          "AWSSDK.Core": "4.0.6.1"
+        },
+        "runtime": {
+          "lib/net8.0/AWSSDK.Bedrock.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.25.5"
+          }
+        }
+      },
+      "AWSSDK.BedrockAgentRuntime/4.0.8.22": {
+        "dependencies": {
+          "AWSSDK.Core": "4.0.6.1"
+        },
+        "runtime": {
+          "lib/net8.0/AWSSDK.BedrockAgentRuntime.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.8.22"
+          }
+        }
+      },
+      "AWSSDK.BedrockRuntime/4.0.17.6": {
+        "dependencies": {
+          "AWSSDK.Core": "4.0.6.1"
+        },
+        "runtime": {
+          "lib/net8.0/AWSSDK.BedrockRuntime.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.17.6"
+          }
+        }
+      },
+      "AWSSDK.Core/4.0.6.1": {
+        "runtime": {
+          "lib/net8.0/AWSSDK.Core.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.6.1"
+          }
+        }
+      },
+      "AWSSDK.S3/4.0.22.2": {
+        "dependencies": {
+          "AWSSDK.Core": "4.0.6.1"
+        },
+        "runtime": {
+          "lib/net8.0/AWSSDK.S3.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.22.2"
+          }
+        }
+      },
+      "DocumentFormat.OpenXml/3.3.0": {
+        "dependencies": {
+          "DocumentFormat.OpenXml.Framework": "3.3.0"
+        },
+        "runtime": {
+          "lib/net8.0/DocumentFormat.OpenXml.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.3.0.0"
+          }
+        }
+      },
+      "DocumentFormat.OpenXml.Framework/3.3.0": {
+        "dependencies": {
+          "System.IO.Packaging": "8.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/DocumentFormat.OpenXml.Framework.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.3.0.0"
+          }
+        }
+      },
+      "Humanizer.Core/2.14.1": {
+        "runtime": {
+          "lib/net6.0/Humanizer.dll": {
+            "assemblyVersion": "2.14.0.0",
+            "fileVersion": "2.14.1.48190"
+          }
+        }
+      },
+      "Json.More.Net/3.0.1": {
+        "runtime": {
+          "lib/net8.0/Json.More.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.0.1.0"
+          }
+        }
+      },
+      "JsonPointer.Net/7.0.1": {
+        "dependencies": {
+          "Humanizer.Core": "2.14.1",
+          "Json.More.Net": "3.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/JsonPointer.Net.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.1.0"
+          }
+        }
+      },
+      "JsonSchema.Net/9.2.0": {
+        "dependencies": {
+          "JsonPointer.Net": "7.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/JsonSchema.Net.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.2.0.0"
+          }
+        }
+      },
+      "System.IO.Packaging/8.0.1": {
+        "runtime": {
+          "lib/net8.0/System.IO.Packaging.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.1024.46610"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AgentProxy/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Amazon.Lambda.Annotations/1.15.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-xPIEl4BqwAiVTQT9CdusEs2E+p45wmcH2kebRtI7hAypo2fOstsBYGr32uCaEsbCtNXYkyPdLn1QmY/lpATwqA==",
+      "path": "amazon.lambda.annotations/1.15.1",
+      "hashPath": "amazon.lambda.annotations.1.15.1.nupkg.sha512"
+    },
+    "Amazon.Lambda.Core/2.8.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wLrBdUXY1jn12o3+sar5c5ApMJPGEMye+1rnyDjwCKA2rcPNMZbNsKLQ76bV+DGnx5CN8bArB26SKB/rEuxIxQ==",
+      "path": "amazon.lambda.core/2.8.1",
+      "hashPath": "amazon.lambda.core.2.8.1.nupkg.sha512"
+    },
+    "Amazon.Lambda.Serialization.SystemTextJson/2.4.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-iv/cvqFuZ3v3+NFDyof0IJZvU+4kdpzOe3pWSBwp9HB885I+D32WQxuid9V4GnvRynER9XnWMPaDmImX8qH5cA==",
+      "path": "amazon.lambda.serialization.systemtextjson/2.4.4",
+      "hashPath": "amazon.lambda.serialization.systemtextjson.2.4.4.nupkg.sha512"
+    },
+    "AWSSDK.Bedrock/4.0.25.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Nerp8OJxvl/H8UP+VongcyJm39bZGoc7GUdMcxaxxg9n/eGrlIe+9LwrDS5r5Tt1gTznRQsNdVHI9m6JC+yh/g==",
+      "path": "awssdk.bedrock/4.0.25.5",
+      "hashPath": "awssdk.bedrock.4.0.25.5.nupkg.sha512"
+    },
+    "AWSSDK.BedrockAgentRuntime/4.0.8.22": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-j4dLC4Ykv2EFFZdRGy2qrJs9ReygUdzMKVay+91QTYqMOvtX7RwU7XG4FOnAZ6zzDH/wHHBDKjFDJhvRrT5cRg==",
+      "path": "awssdk.bedrockagentruntime/4.0.8.22",
+      "hashPath": "awssdk.bedrockagentruntime.4.0.8.22.nupkg.sha512"
+    },
+    "AWSSDK.BedrockRuntime/4.0.17.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JEU30FcdWrGwa0JbVoUutCyrrouondikbQySSInsrB+lRYFwjUh1NJCpmnb8syfLqMp903xC2lrqnX0CAUcAlw==",
+      "path": "awssdk.bedrockruntime/4.0.17.6",
+      "hashPath": "awssdk.bedrockruntime.4.0.17.6.nupkg.sha512"
+    },
+    "AWSSDK.Core/4.0.6.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rPhyuf5BtxAxI1x4a9DlMfknODiVzr9Kc5QWDjn/thmnmCLT6ggBh0zlpaXlP/MtdpN/mhEpTIODvzMIWrICVQ==",
+      "path": "awssdk.core/4.0.6.1",
+      "hashPath": "awssdk.core.4.0.6.1.nupkg.sha512"
+    },
+    "AWSSDK.S3/4.0.22.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RYBhoTFlMRq2tiqv/8FfSRFkNz0OCY2U5AbwH5PWpI/XhI3eQp34ujVAT9gD9DqOUHKDaQvJegauypUSO6wkjQ==",
+      "path": "awssdk.s3/4.0.22.2",
+      "hashPath": "awssdk.s3.4.0.22.2.nupkg.sha512"
+    },
+    "DocumentFormat.OpenXml/3.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JogRPJNiE6kKvbuCqVRX691pPWeGMqdQgjrUwRYkdpfkMmtElfqAgcRR73geYj7OtBeEpstldZXXzJw27LUI9w==",
+      "path": "documentformat.openxml/3.3.0",
+      "hashPath": "documentformat.openxml.3.3.0.nupkg.sha512"
+    },
+    "DocumentFormat.OpenXml.Framework/3.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-R5CLzEoeyr7XDB7g3NTxRobcU19agaxVAhGZm+fZUShJGiU4bw8oUgnA2BNFepigJckfFMayOBMAbV3kDXNInA==",
+      "path": "documentformat.openxml.framework/3.3.0",
+      "hashPath": "documentformat.openxml.framework.3.3.0.nupkg.sha512"
+    },
+    "Humanizer.Core/2.14.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw==",
+      "path": "humanizer.core/2.14.1",
+      "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
+    },
+    "Json.More.Net/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fRctF2J2SILYG6wqP21drmeEODmCVkVQ/b3MndDu2fT1swfySyUgq7ePCk+aENGlDcIm05fyfjh9vcuqDEfv3w==",
+      "path": "json.more.net/3.0.1",
+      "hashPath": "json.more.net.3.0.1.nupkg.sha512"
+    },
+    "JsonPointer.Net/7.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5C497yxfktYFsqxKG+GUQPsMvBqIjzLkqtDEdMGsnBpl3/OB8DOvTo7LEyRX7AVc1kVVj0IX5zhmLrlbvAYEnw==",
+      "path": "jsonpointer.net/7.0.1",
+      "hashPath": "jsonpointer.net.7.0.1.nupkg.sha512"
+    },
+    "JsonSchema.Net/9.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pc1hr16zNQSxVsOSIYWliE3rtl5E4MwRXReflPf60l5tSvzMfl65eJV6M+iPXhZ2Ui5o078LJ2pS9O1o5ZT1zQ==",
+      "path": "jsonschema.net/9.2.0",
+      "hashPath": "jsonschema.net.9.2.0.nupkg.sha512"
+    },
+    "System.IO.Packaging/8.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KYkIOAvPexQOLDxPO2g0BVoWInnQhPpkFzRqvNrNrMhVT6kqhVr0zEb6KCHlptLFukxnZrjuMVAnxK7pOGUYrw==",
+      "path": "system.io.packaging/8.0.1",
+      "hashPath": "system.io.packaging.8.0.1.nupkg.sha512"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+    "Title page": {
+        "layout_slide": 0,
+        "layout_slide_name": "Title Slide Option 1",
+        "title_placeholder": 0,
+        "subtitle_placeholder": 1,
+        "full_name_placeholder": 11,
+        "job_title_placeholder": 12,
+        "text_placeholder": 2,
+        "image_placeholder": null
+    },
+    "Agenda": {
+        "layout_slide": 1,
+        "layout_slide_name": "Agenda",
+        "title_placeholder": 0,
+        "agenda_title": "Today's agenda",
+        "text_placeholder": 10,
+        "image_placeholder": null
+    },
+    "Slide with bullet points": {
+        "layout_slide": 2,
+        "layout_slide_name": "Title, Subtitle, and Bulleted Content",
+        "title_placeholder": 0,
+        "subtitle_placeholder": 10,
+        "text_placeholder": 1
+    },
+    "Slide with image and text": {
+        "layout_slide": 3,
+        "layout_slide_name": "Title, Content, and Image",
+        "title_placeholder": 0,
+        "text_placeholder": 1,
+        "image_text_field": "text",
+        "image_placeholder": 10,
+        "image_height": 576,
+        "image_width": 384
+    },
+    "Slide with image only": {
+        "layout_slide": 4,
+        "layout_slide_name": "Full Screen Photo",
+        "image_placeholder": 10,
+        "image_text_field": "title",
+        "image_height": 384,
+        "image_width": 576
+    },
+    "Slide with 4 takeaways": {
+        "layout_slide": 5,
+        "layout_slide_name": "Use Cases: Boxes",
+        "title_placeholder": 0,
+        "text1_placeholder": 17,
+        "text2_placeholder": 18,
+        "text3_placeholder": 19,
+        "text4_placeholder": 20
+    },
+    "Thank you": {
+        "layout_slide": 6,
+        "layout_slide_name": "Thank You Option 1",
+        "title_placeholder": 0,
+        "full_name_placeholder": 10,
+        "contact_info_placeholder": 11
+    }
+}

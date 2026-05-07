@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<AWSProjectType>Lambda</AWSProjectType>
+		<PublishReadyToRunComposite>true</PublishReadyToRunComposite>
+		<EventSourceSupport>false</EventSourceSupport>
+		<UseSystemResourceKeys>true</UseSystemResourceKeys>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<SelfContained>true</SelfContained>
+		<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="*" />
+    <PackageReference Include="Amazon.Lambda.Core" Version="*" />
+    <PackageReference Include="Amazon.Lambda.APIGatewayEvents" Version="*" />
+    <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="*" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="*"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApiHandlers\ApiHandlers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\template.yaml">
+      <Link>template.yaml</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+</Project>

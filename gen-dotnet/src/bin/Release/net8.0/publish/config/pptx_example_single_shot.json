@@ -1,0 +1,59 @@
+{
+    "slides": [
+        {
+        "slide_n": 1,
+        "title": "Generative AI: The Future is Here",
+        "subtitle": "Unleashing the Power of Artificial Intelligence",
+        "text": "In this presentation, we'll explore the fascinating world of Generative AI, a cutting-edge technology that is revolutionizing various industries and shaping our future.",
+        "speaker_notes": "Introduce yourself and the presentation topic, how you will explore the fascinating world of Generative AI and how it is revolutionizing various industries and shaping our future",
+        "slideFormat": "Title page"
+        },
+        {
+        "slide_n": 2,
+        "title": "What is Generative AI?",
+        "subtitle": "Understanding the Concept",
+        "text": "*** Generative AI refers to artificial intelligence models capable of generating new, original content. *** It encompasses techniques like machine learning, deep learning, and neural networks. *** These models can create text, images, audio, video, and even code.",
+        "speaker_notes": "...",
+        "slideFormat": "Slide with bullet points"
+        },
+        {
+        "slide_n": 3,
+        "title": "Applications of Generative AI",
+        "subtitle": "Transforming Industries",
+        "text": "Generative AI has numerous applications across various domains:  *** Content Creation: Write articles, stories, scripts, and more. *** Art and Design: Generate realistic images, artwork, and designs. *** Music and Audio: Compose original music, create sound effects, and synthesize voices. *** Gaming and Animation: Develop realistic virtual worlds and animated characters.",
+        "speaker_notes": "...",
+        "slideFormat": "Slide with bullet points"
+        },
+        {
+        "slide_n": 4,
+        "title": "Revolutionizing Creativity",
+        "subtitle": "Expanding the Boundaries of Imagination",
+        "text": "Generative AI is a powerful tool that can augment human creativity and open new avenues for artistic expression. By collaborating with these models, artists, writers, and creators can explore new ideas and push the boundaries of what's possible.",
+        "speaker_notes": "...",
+        "slideFormat": "Slide with image and text"
+        },
+        {
+        "slide_n": 5,
+        "title": "The Future of Generative AI",
+        "subtitle": "Challenges and Opportunities",
+        "text": "*** Responsible Development: Addressing ethical concerns and biases. *** Expanded Applications: Exploring new domains and use cases. *** Integration with Existing Systems: Seamless integration for enhanced productivity. *** Continuous Improvement: Refining models for better accuracy and output quality.",
+        "speaker_notes": "...",
+        "slideFormat": "Slide with bullet points"
+        },
+        {
+        "slide_n": 6,
+        "title": "The Future of Generative AI is flying with you",
+        "subtitle": "Embrace the power of Generative AI with the easiness of serverless capabilities",
+        "speaker_notes": "Serverless capabilities allow you to focus on what matters, with Pay-as-you-go flexible model",
+        "slideFormat": "Slide with image only"
+        },
+        {
+        "slide_n": 7,
+        "title": "Important information",
+        "subtitle": "Let's focus on the key messages regarding Generative AI in this presentation",
+        "text": "*** Responsible Development *** Expanded Applications *** Integration with Existing Systems *** Continuous Improvement",
+        "speaker_notes": "Remind the public about the important messages that you want to convey at the end of the presentation, so that they leave the room with something tangible",
+        "slideFormat": "Slide with 4 takeaways"
+        }
+    ]
+}
