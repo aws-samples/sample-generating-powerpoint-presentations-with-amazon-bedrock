@@ -1,0 +1,281 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Bedrock Knowledge Base resources for tenant"
+
+Parameters:
+  TenantId:
+    Type: String
+    Description: "Unique tenant identifier"
+
+  TenantIdShort:
+    Type: String
+
+  VectorBucket:
+    Type: String
+    Description: "S3 bucket name for data source"
+
+  SupplementalStorageBucket:
+    Type: String
+    Description: "S3 bucket name for knowledgebase supplemental storage"
+
+  VectorBucketKmsKeyArn:
+    Type: String
+
+  OpenSearchCollectionArn:
+    Type: String
+    Description: "OpenSearch Serverless collection ARN"
+
+  OpenSearchCollectionName:
+    Type: String
+    Description: "OpenSearch Serverless collection Name"
+
+  OpenSearchKmsKeyArn:
+    Type: String
+
+  VectorIndexName:
+    Type: String
+    Description: "Vector index name in OpenSearch"
+
+  EmbeddingModelArn:
+    Type: String
+    Description: "Embedding model ARN"
+
+  ParsingModelArns:
+    Type: String
+
+  ParsingInferenceProfileArn:
+    Type: String
+
+  EnableSupplementalDataStorage:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+    Description: "Enable supplemental data storage for enhanced retrieval capabilities"
+
+  VectorField:
+    Type: String
+    Default: "vector"
+    Description: "Vector field name"
+
+  TextField:
+    Type: String
+    Default: "AMAZON_BEDROCK_TEXT_CHUNK"
+    Description: "Text field name"
+
+  MetadataField:
+    Type: String
+    Default: "AMAZON_BEDROCK_METADATA"
+    Description: "Metadata field name"
+
+  DataSourceType:
+    Type: String
+    Default: "S3"
+    AllowedValues: ["S3", "CUSTOM"]
+    Description: "Data source configuration type - S3 for S3 bucket or CUSTOM for custom data source"
+
+Conditions:
+  EnableSupplementalStorage:
+    !Equals [!Ref EnableSupplementalDataStorage, "true"]
+  UseS3DataSource: !Equals [!Ref DataSourceType, "S3"]
+  UseCustomDataSource: !Equals [!Ref DataSourceType, "CUSTOM"]
+
+Resources:
+  OpenSearchAccessPolicy:
+    Type: AWS::OpenSearchServerless::AccessPolicy
+    Properties:
+      Name: !Sub "kb-${TenantIdShort}"
+      Type: data
+      Description: !Sub "Access policy for Bedrock Knowledge Base role for tenant ${TenantId}"
+      Policy: !Sub |
+        [
+          {
+            "Rules": [
+              {
+                "ResourceType": "index",
+                "Resource": ["index/${OpenSearchCollectionName}/${TenantId}*"],
+                "Permission": [
+                  "aoss:CreateIndex",
+                  "aoss:DeleteIndex",
+                  "aoss:UpdateIndex",
+                  "aoss:DescribeIndex",
+                  "aoss:ReadDocument",
+                  "aoss:WriteDocument"
+                ]
+              },
+              {
+                "ResourceType": "collection",
+                "Resource": ["collection/${OpenSearchCollectionName}"],
+                "Permission": [
+                  "aoss:CreateCollectionItems",
+                  "aoss:DeleteCollectionItems",
+                  "aoss:UpdateCollectionItems",
+                  "aoss:DescribeCollectionItems"
+                ]
+              }
+            ],
+            "Principal": ["${BedrockKnowledgeBaseRole.Arn}"]
+          }
+        ]
+
+  BedrockKnowledgeBaseRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "BedrockKBRole-${TenantId}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: bedrock.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: BedrockKnowledgeBasePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                  - kms:GenerateDataKey
+                Resource:
+                  - !Ref VectorBucketKmsKeyArn
+                  - !Ref OpenSearchKmsKeyArn
+              - Effect: Allow
+                Action:
+                  - bedrock:InvokeModel
+                  - bedrock:InvokeModelWithResponseStream
+                  - bedrock:GetInferenceProfile
+                Resource: !Split
+                  - ","
+                  - !Sub
+                    - "${EmbeddingModelArn},${ParsingModelArns},${ParsingInferenceProfileArn}"
+                    - EmbeddingModelArn: !Ref EmbeddingModelArn
+                      ParsingModelArns: !Ref ParsingModelArns
+                      ParsingInferenceProfileArn: !Ref ParsingInferenceProfileArn
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource:
+                  - !Sub "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/*"
+              - Effect: Allow
+                Action:
+                  - aoss:APIAccessAll
+                  - aoss:DescribeCollection
+                  - aoss:ListCollections
+                  - aoss:BatchGetCollection
+                  - aoss:CreateCollection
+                  - aoss:DeleteCollection
+                  - aoss:UpdateCollection
+                  - aoss:DescribeIndex
+                  - aoss:CreateIndex
+                  - aoss:DeleteIndex
+                  - aoss:UpdateIndex
+                Resource:
+                  - !Sub "${OpenSearchCollectionArn}"
+                  - !Sub "${OpenSearchCollectionArn}/*"
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:ListBucket
+                Resource:
+                  - !Sub "arn:${AWS::Partition}:s3:::${SupplementalStorageBucket}"
+                  - !Sub "arn:${AWS::Partition}:s3:::${SupplementalStorageBucket}/*"
+              - !If
+                - UseS3DataSource
+                - Effect: Allow
+                  Action:
+                    - s3:GetObject
+                    - s3:PutObject
+                    - s3:DeleteObject
+                    - s3:ListBucket
+                  Resource:
+                    - !Sub "arn:${AWS::Partition}:s3:::${VectorBucket}"
+                    - !Sub "arn:${AWS::Partition}:s3:::${VectorBucket}/aws/bedrock/knowledge_bases/*"
+                    - !Sub "arn:${AWS::Partition}:s3:::${VectorBucket}/${TenantId}/transformed/*"
+                - !Ref "AWS::NoValue"
+
+  BedrockKnowledgeBase:
+    Type: AWS::Bedrock::KnowledgeBase
+    DependsOn: OpenSearchAccessPolicy
+    Properties:
+      Name: !Sub "kb-${TenantId}"
+      Description: !Sub "Knowledge base for tenant ${TenantId}"
+      RoleArn: !GetAtt BedrockKnowledgeBaseRole.Arn
+      KnowledgeBaseConfiguration:
+        Type: VECTOR
+        VectorKnowledgeBaseConfiguration:
+          EmbeddingModelArn: !Ref EmbeddingModelArn
+          EmbeddingModelConfiguration:
+            BedrockEmbeddingModelConfiguration:
+              Dimensions: 1024
+              EmbeddingDataType: FLOAT32
+          SupplementalDataStorageConfiguration: !If
+            - EnableSupplementalStorage
+            - SupplementalDataStorageLocations:
+                - SupplementalDataStorageLocationType: S3
+                  S3Location:
+                    URI: !Sub s3://${SupplementalStorageBucket}/
+            - !Ref "AWS::NoValue"
+      StorageConfiguration:
+        Type: OPENSEARCH_SERVERLESS
+        OpensearchServerlessConfiguration:
+          CollectionArn: !Ref OpenSearchCollectionArn
+          VectorIndexName: !Ref VectorIndexName
+          FieldMapping:
+            VectorField: !Ref VectorField
+            TextField: !Ref TextField
+            MetadataField: !Ref MetadataField
+
+  BedrockDataSource:
+    Type: AWS::Bedrock::DataSource
+    Properties:
+      KnowledgeBaseId: !Ref BedrockKnowledgeBase
+      Name: !Sub "ds-${TenantId}"
+      Description: !Sub "Data source for tenant ${TenantId}"
+      VectorIngestionConfiguration:
+        ChunkingConfiguration:
+          ChunkingStrategy: "FIXED_SIZE"
+          FixedSizeChunkingConfiguration:
+            MaxTokens: 300
+            OverlapPercentage: 20
+        ParsingConfiguration:
+          ParsingStrategy: "BEDROCK_FOUNDATION_MODEL"
+          BedrockFoundationModelConfiguration:
+            ModelArn: !Ref ParsingInferenceProfileArn
+            ParsingModality: "MULTIMODAL"
+      DataSourceConfiguration: !If
+        - UseS3DataSource
+        - Type: S3
+          S3Configuration:
+            BucketArn: !Sub "arn:${AWS::Partition}:s3:::${VectorBucket}"
+            InclusionPrefixes:
+              - !Sub "${TenantId}/transformed"
+        - Type: CUSTOM
+      ServerSideEncryptionConfiguration: !If
+        - UseS3DataSource
+        - KmsKeyArn: !Ref VectorBucketKmsKeyArn
+        - !Ref "AWS::NoValue"
+
+Outputs:
+  KnowledgeBaseId:
+    Description: "Bedrock Knowledge Base ID"
+    Value: !Ref BedrockKnowledgeBase
+
+  DataSourceId:
+    Description: "Bedrock Data Source ID"
+    Value: !GetAtt BedrockDataSource.DataSourceId
+
+  KnowledgeBaseArn:
+    Description: "Bedrock Knowledge Base ARN"
+    Value: !GetAtt BedrockKnowledgeBase.KnowledgeBaseArn
+
+  RoleArn:
+    Description: "IAM Role ARN for Knowledge Base"
+    Value: !GetAtt BedrockKnowledgeBaseRole.Arn
+
+  AccessPolicyName:
+    Description: "OpenSearch Serverless Access Policy Name"
+    Value: !Ref OpenSearchAccessPolicy
