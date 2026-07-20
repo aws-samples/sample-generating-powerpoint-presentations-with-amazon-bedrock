@@ -51,6 +51,15 @@ class VpcStack(Stack):
             security_groups=[sg],
             private_dns_enabled=True
         )
+        vpce_agentcore = ec2.InterfaceVpcEndpoint(self, "Bedrock AgentCore vpc endpoint",
+            vpc=vpc,
+            service=ec2.InterfaceVpcEndpointService(f"com.amazonaws.{Aws.REGION}.bedrock-agentcore", 443),
+            subnets=ec2.SubnetSelection(
+                subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS
+            ),
+            security_groups=[sg],
+            private_dns_enabled=True
+        )
         vpce_bedrock_runtime = ec2.InterfaceVpcEndpoint(self, "Bedrock runtime vpc endpoint", 
             vpc=vpc,
             service=ec2.InterfaceVpcEndpointService(f"com.amazonaws.{Aws.REGION}.bedrock-runtime", 443),
@@ -144,6 +153,28 @@ class VpcStack(Stack):
         vpce_agent.add_to_policy(bedrock_agent_vpce_policy)
         vpce_runtime.add_to_policy(bedrock_agent_vpce_policy)
         vpce_bedrock_runtime.add_to_policy(bedrock_vpce_policy)
+
+        # AgentCore VPC endpoint policy
+        agentcore_vpce_policy = iam.PolicyStatement(
+            effect=iam.Effect.ALLOW,
+            principals=[iam.AnyPrincipal()],
+            actions=[
+                "bedrock-agentcore:InvokeAgentRuntime",
+                "bedrock-agentcore:CreateSession",
+                "bedrock-agentcore:EndSession",
+                "bedrock-agentcore:DeleteSession",
+                "bedrock-agentcore:GetAgentRuntime",
+                "bedrock-agentcore:ListAgentRuntimes",
+                "bedrock-agentcore:InvokeAgentRuntimeCommand",
+            ],
+            resources=["*"],
+            conditions={
+                "StringEquals": {
+                    "aws:PrincipalAccount": Aws.ACCOUNT_ID
+                }
+            }
+        )
+        vpce_agentcore.add_to_policy(agentcore_vpce_policy)
 
         vpce_opensearch.add_to_policy(
             iam.PolicyStatement(
@@ -266,4 +297,9 @@ class VpcStack(Stack):
         ssm.StringParameter(self, 'vpc-id-opensearch',
             parameter_name=f"/proserv/vpcendpoint/opensearch-vpceid",
             string_value=vpce_opensearch.vpc_endpoint_id
+        )
+
+        ssm.StringParameter(self, 'vpc-id-agentcore',
+            parameter_name=f"/proserv/vpcendpoint/bedrock-agentcore-vpceid",
+            string_value=vpce_agentcore.vpc_endpoint_id
         )

@@ -16,19 +16,12 @@ namespace ApiBootstrap
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDefaultAWSOptions(configuration.GetAWSOptions());
-            // services.AddAWSSDK<IAmazonDynamoDB>();
-            // services.AddAWSService<AmazonDynamoDBClient>();
-            // // services.AddAWSService<AmazonSecurityTokenServiceClient>();
-            // services.AddAWSService<AmazonBedrockAgentClient>();
-            // services.AddAWSService<AmazonBedrockAgentRuntimeClient>();
-            // services.AddAWSService<AmazonBedrockRuntimeClient>();
             services.AddScoped<ChatDAO>();
             services.AddScoped<ChatApiHandler>();
             services.AddScoped<AWSClientFactory>();
             services.AddHttpContextAccessor();
             services.AddOptions<RedrockAgentConfig>().Configure((config) => {
-               config.AgentAliasId = System.Environment.GetEnvironmentVariable("AGENT_ALIAS_ID");
-               config.AgentId = System.Environment.GetEnvironmentVariable("AGENT_ID");
+               config.AgentRuntimeEndpointArn = System.Environment.GetEnvironmentVariable("AGENT_RUNTIME_ENDPOINT_ARN") ?? "";
             });
 
             services.AddAWSLambdaHosting(LambdaEventSource.RestApi);

@@ -4,7 +4,7 @@ import aws_cdk as cdk
 
 from stacks.vpc import VpcStack
 from stacks.api import ChatApiStack
-from stacks.MultiAgentStack_stack import MultiAgentStack
+from stacks.agentcore_stack import AgentCoreStack
 from stacks.opensearch_stack import OpensearchStack
 
 
@@ -25,9 +25,9 @@ opensearch=OpensearchStack(
     app, 
     "OpensearchStack",
     env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')))
-agent=MultiAgentStack(
+agent=AgentCoreStack(
     app, 
-    "MultiAgentStack",
+    "AgentCoreStack",
     env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')))
 agent.add_dependency(opensearch)
 api=ChatApiStack(

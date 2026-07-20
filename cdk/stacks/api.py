@@ -31,12 +31,9 @@ class ChatApiStack(Stack):
         env_name = self.node.try_get_context("environment")
         profile = self.node.try_get_context("awscliprofile")
         
-        # Get supervisor agent ID and alias ID from SSM parameters
-        agentId = ssm.StringParameter.value_for_string_parameter(
-            self, "/proserv/bedrock/super_agent_id"
-        )
-        agentAliasId = ssm.StringParameter.value_for_string_parameter(
-            self, "/proserv/bedrock/super_agent_alias_id"
+        # Get AgentCore Runtime endpoint ARN from SSM parameters
+        agentRuntimeEndpointArn = ssm.StringParameter.value_for_string_parameter(
+            self, "/proserv/agentcore/runtime_endpoint_arn"
         )
         Tags.of(self).add("Environment", env_name)
 
@@ -121,8 +118,7 @@ class ChatApiStack(Stack):
         api_lambda.add_environment("PARTITION", Aws.PARTITION)
         api_lambda.add_environment("REGION", Aws.REGION)
         api_lambda.add_environment("ACCOUNTID", Aws.ACCOUNT_ID)
-        api_lambda.add_environment("AGENT_ID", agentId)
-        api_lambda.add_environment("AGENT_ALIAS_ID", agentAliasId)
+        api_lambda.add_environment("AGENT_RUNTIME_ENDPOINT_ARN", agentRuntimeEndpointArn)
 
         policy = aws_iam.ManagedPolicy.from_aws_managed_policy_name('service-role/AWSLambdaBasicExecutionRole')
         api_lambda.role.add_managed_policy(policy)
@@ -130,24 +126,18 @@ class ChatApiStack(Stack):
             aws_iam.ManagedPolicy.from_aws_managed_policy_name('AWSXRayDaemonWriteAccess')
         )
         api_lambda.role.attach_inline_policy(
-            aws_iam.Policy(self, "bedrock-invoke",
+            aws_iam.Policy(self, "agentcore-invoke",
                 statements=[
                     aws_iam.PolicyStatement(
                         actions=[
-                            "bedrock:GetAgent",
-                            "bedrock:GetAgentVersion",
-                            "bedrock:CreateSession",
-                            "bedrock:EndSession",
-                            "bedrock:DeleteSession",
-                            "bedrock:InvokeAgent",
-                            "bedrock:InvokeInlineAgent",
-                            "bedrock:RenderPrompt",
-                            "bedrock:InvokeFlow",
-                            "bedrock:OptimizePrompt",
-                            "bedrock:Retrieve"
+                            "bedrock-agentcore:InvokeAgentRuntime",
+                            "bedrock-agentcore:CreateSession",
+                            "bedrock-agentcore:EndSession",
+                            "bedrock-agentcore:DeleteSession",
+                            "bedrock-agentcore:GetAgentRuntime",
                         ],
                         resources=[
-                            f"arn:{Aws.PARTITION}:bedrock:{Aws.REGION}:{Aws.ACCOUNT_ID}:agent-alias/{agentId}/{agentAliasId}"
+                            f"arn:{Aws.PARTITION}:bedrock-agentcore:{Aws.REGION}:{Aws.ACCOUNT_ID}:runtime/*"
                         ]
                     )
                 ])
@@ -157,12 +147,12 @@ class ChatApiStack(Stack):
                 statements=[
                     aws_iam.PolicyStatement(
                         actions=[
-                            "bedrock:CreateSession",
-                            "bedrock:EndSession",
-                            "bedrock:DeleteSession"
+                            "bedrock-agentcore:CreateSession",
+                            "bedrock-agentcore:EndSession",
+                            "bedrock-agentcore:DeleteSession"
                         ],
                         resources=[
-                            f"arn:{Aws.PARTITION}:bedrock:{Aws.REGION}:{Aws.ACCOUNT_ID}:session/*"
+                            f"arn:{Aws.PARTITION}:bedrock-agentcore:{Aws.REGION}:{Aws.ACCOUNT_ID}:runtime/*/session/*"
                         ]
                     )
                 ])

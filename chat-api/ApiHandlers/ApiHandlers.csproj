@@ -13,6 +13,7 @@
     <PackageReference Include="AWSSDK.Bedrock" Version="*" />
     <PackageReference Include="AWSSDK.BedrockAgentRuntime" Version="*" />
     <PackageReference Include="AWSSDK.BedrockAgent" Version="*" />
+    <PackageReference Include="AWSSDK.BedrockAgentCore" Version="*" />
     <PackageReference Include="AWSSDK.SecurityToken" Version="*" />
   </ItemGroup>
 

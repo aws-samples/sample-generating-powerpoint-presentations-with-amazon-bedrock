@@ -56,8 +56,8 @@ def create_sum_lambda(self: Stack, bucket, guardrail_id: str = "", guardrail_ver
         timeout=Duration.seconds(300),
         runtime=_lambda.Runtime.PYTHON_3_12,
         environment   = {
-            "MODEL_ID": agent_inference_profile_arn,
-            "S3_BUCKET":bucket,
+            "MODEL_ID": agent_inference_profile_id,
+            "S3_BUCKET": bucketDev,
             "GUARDRAIL_ID": guardrail_id,
             "GUARDRAIL_VERSION": guardrail_version
         },

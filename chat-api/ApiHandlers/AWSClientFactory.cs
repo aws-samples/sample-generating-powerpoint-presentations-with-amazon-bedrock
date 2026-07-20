@@ -1,5 +1,6 @@
 using Amazon.Bedrock;
 using Amazon.BedrockAgent;
+using Amazon.BedrockAgentCore;
 using Amazon.BedrockAgentRuntime;
 using Amazon.BedrockRuntime;
 using Amazon.SecurityToken;
@@ -29,6 +30,11 @@ public class AWSClientFactory () {
     public async Task<IAmazonBedrockAgentRuntime> GetBedrockAgentRuntimeAsync(string tenantId) {
         var credentials = await AssumeRoleForTenantAsync(tenantId);
         return new AmazonBedrockAgentRuntimeClient(credentials);
+    }
+
+    public async Task<IAmazonBedrockAgentCore> GetBedrockAgentCoreAsync(string tenantId) {
+        var credentials = await AssumeRoleForTenantAsync(tenantId);
+        return new AmazonBedrockAgentCoreClient(credentials);
     }
 
     public async Task<IAmazonBedrockAgent> GetBedrockAgentAsync(string tenantId) {

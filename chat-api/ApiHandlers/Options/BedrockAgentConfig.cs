@@ -2,7 +2,11 @@ namespace ApiHandlers.Options;
 
 public class RedrockAgentConfig
 {
-    public required string AgentId { get; set; }
-    public required string AgentAliasId { get; set; }
-    public required string ModelId { get; set;}
+    /// <summary>
+    /// The AgentCore Runtime Endpoint ARN used to invoke the agent.
+    /// Replaces the classic AgentId + AgentAliasId pattern.
+    /// </summary>
+    public required string AgentRuntimeEndpointArn { get; set; }
+    
+    public string? ModelId { get; set; }
 }

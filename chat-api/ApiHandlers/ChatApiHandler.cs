@@ -3,13 +3,13 @@ using ApiHandlers.Models;
 using ApiHandlers.DataAccess;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using Amazon.BedrockAgentRuntime.Model;
+using Amazon.BedrockAgentCore;
+using Amazon.BedrockAgentCore.Model;
 using Microsoft.Extensions.Options;
 using ApiHandlers.Options;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
 using System.Text.Json;
 
 namespace ApiHandlers
@@ -33,11 +33,11 @@ namespace ApiHandlers
             if (chat == null) {
                 throw new ResourceNotFoundException("Chat with matching sessionId is not found.");
             } else if (chat.TenantId != tenantId) {
-                throw new ConflictException("TenaltId doesn't match");
+                throw new ConflictException("TenantId doesn't match");
             }
             return chat;
-        
         }
+
         public async Task<IResult> GetSession([FromRoute]string tenantId, [FromRoute]string sessionId)
         {
             logger.LogInformation("Received request to get chat history by session id");
@@ -74,18 +74,15 @@ namespace ApiHandlers
                 return Results.BadRequest("Invalid tenant ID format.");
 
             try {
+                var userId = contextAccessor?.HttpContext?.User.FindFirstValue("sub") ?? "n/a";
                 
-                var userId = contextAccessor?.HttpContext?.User.FindFirstValue("sub") ?? "n/a" ;
-                var agent = await factory.GetBedrockAgentRuntimeAsync(tenantId);
-                logger.LogDebug("Starting new session for userId: {userId}...", userId);
-                var session = await agent.CreateSessionAsync(new CreateSessionRequest() {
-                    SessionMetadata = new Dictionary<string, string>() {
-                        { "tenantId", tenantId },
-                        { "userId", userId }
-                    }
-                });
-                logger.LogDebug("Session started: {sessionId}, {sessionStatus}", session.SessionId, session.SessionStatus);
-                var chat = new Chat(tenantId, session.SessionId, session.SessionStatus, userId, []);        
+                // For AgentCore Runtime, sessions are managed by the runtime itself.
+                // We generate a session ID client-side and pass it as RuntimeSessionId
+                // on each InvokeAgentRuntime call. The runtime handles session lifecycle.
+                var sessionId = Guid.NewGuid().ToString();
+                
+                logger.LogDebug("Starting new session {sessionId} for userId: {userId}", sessionId, userId);
+                var chat = new Chat(tenantId, sessionId, "Active", userId, []);        
 
                 await chats.Post(chat);
                 return Results.Json(chat);
@@ -108,72 +105,45 @@ namespace ApiHandlers
 
             try
             {
-                logger.LogDebug("agent config: {agentId} {agentAliasId}", agentConfig.Value.AgentId, agentConfig.Value.AgentAliasId);
+                var endpointArn = agentConfig.Value.AgentRuntimeEndpointArn;
+                logger.LogDebug("AgentCore endpoint: {endpointArn}", endpointArn);
+                
                 var chat = await GetAndVerify(tenantId, sessionId);
+                
+                // Look up the tenant's knowledge base
                 var agent = await factory.GetBedrockAgentAsync(chat.TenantId);
-                var list = await agent.ListKnowledgeBasesAsync(new Amazon.BedrockAgent.Model.ListKnowledgeBasesRequest() {
-
-                });
-                logger.LogDebug("Number of knowledge: {num}", list.KnowledgeBaseSummaries.Count);
+                var list = await agent.ListKnowledgeBasesAsync(new Amazon.BedrockAgent.Model.ListKnowledgeBasesRequest());
+                logger.LogDebug("Number of knowledge bases: {num}", list.KnowledgeBaseSummaries.Count);
                 var kb = list.KnowledgeBaseSummaries.FirstOrDefault(item => item.Name.Contains(chat.TenantId, StringComparison.InvariantCultureIgnoreCase));
 
-                if (kb == null) new ConflictException("Unable to find Knowledge base for this tenant");
+                if (kb == null) throw new ConflictException("Unable to find Knowledge base for this tenant");
 
-                var promptText = $"prompt = '{prompt.Text}', kd_id = '{kb?.KnowledgeBaseId}', tenant_id = '{tenantId}'";
+                // Build the prompt with parameters for the agent
+                var promptText = $"prompt = '{prompt.Text}', kb_id = '{kb?.KnowledgeBaseId}', tenant_id = '{tenantId}'";
                 logger.LogDebug("prompt: {promptText}", promptText);
 
-                var agentRuntime = await factory.GetBedrockAgentRuntimeAsync(chat.TenantId);                
-                var response = await agentRuntime.InvokeAgentAsync(new InvokeAgentRequest() {
-                    AgentId = agentConfig.Value.AgentId,
-                    AgentAliasId = agentConfig.Value.AgentAliasId,
-                    SessionId = chat.SessionId,    
-                    SessionState = new SessionState() {
-                        SessionAttributes = new Dictionary<string, string>() {
-                            { "tenantId", chat.TenantId },
-                            { "userId", chat.UserId }
-                        }
+                // Build the payload as JSON
+                var payloadJson = JsonSerializer.Serialize(new { text = promptText });
+                var payloadStream = new MemoryStream(Encoding.UTF8.GetBytes(payloadJson));
 
-                    },
-                    InputText = promptText,
-                    EnableTrace = true,
-                    
+                // Invoke the AgentCore Runtime agent
+                var agentCore = await factory.GetBedrockAgentCoreAsync(chat.TenantId);
+                
+                var response = await agentCore.InvokeAgentRuntimeAsync(new InvokeAgentRuntimeRequest() {
+                    AgentRuntimeArn = endpointArn,
+                    RuntimeSessionId = chat.SessionId,
+                    Payload = payloadStream,
+                    ContentType = "application/json",
+                    Accept = "application/json"
                 });
+                
                 logger.LogDebug("Result: {statusCode}", response.HttpStatusCode);
-                logger.LogDebug("Result: {metadata}", JsonSerializer.Serialize(response.ResponseMetadata));
-                foreach(var item in response.Completion)
-                {
-                    
-                    var trace = item as TracePart;
-                    var payload = item as PayloadPart;
-                    var files = item as FilePart; //Amazon.BedrockAgentRuntime.Model.Part
-                    var chunks = item as TextResponsePart;
-                    var test = item as Amazon.BedrockAgentRuntime.Model.InlineAgentPayloadPart;
-                    
-                    if (trace != null) {                        
-                        output.Write(Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(trace).ToCharArray()));
-                    } else if (files != null) {                        
-                        output.Write(Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(files).ToCharArray()));
-                    } else if (payload != null) {
-                        if (payload.Attribution?.Citations != null) {
-                            foreach(var citation in payload.Attribution.Citations) {
-                                if (citation.GeneratedResponsePart?.TextResponsePart != null)
-                                    output.Write(Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(citation.GeneratedResponsePart.TextResponsePart)));
-                                if (citation.RetrievedReferences != null && citation.RetrievedReferences.Count > 0) {
-                                    foreach(var reference in citation.RetrievedReferences) {
-                                        output.Write(Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(reference.Content)));
-                                        output.Write(Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(reference.Location)));
-                                    }
-                                }
-                            }
-                            output.Write(Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(chunks).ToCharArray()));
-                        }
-                        output.Write(payload.Bytes.ToArray());
-                    } else {
-                        logger.LogDebug("Unknown part: {item}", item.GetType());
-                        output.Write(Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(item).ToCharArray()));
-                    }
-                }
 
+                // Read the streaming response
+                if (response.Response != null)
+                {
+                    await response.Response.CopyToAsync(output);
+                }
 
                 var result = Encoding.UTF8.GetString(output.ToArray());
                 logger.LogDebug("Finished receiving results: " + result);
@@ -216,34 +186,26 @@ namespace ApiHandlers
             finally {
                 output.Dispose();
             }
-
         }
 
         public async Task<IResult> EndSession([FromRoute]string tenantId, [FromRoute]string sessionId)
         {
-            logger.LogInformation("Received request to end chat history");
+            logger.LogInformation("Received request to end chat session");
 
             if (!IsValidTenantId(tenantId))
                 return Results.BadRequest("Invalid tenant ID format.");
             if (!IsValidSessionId(sessionId))
                 return Results.BadRequest("Invalid session ID format.");
 
-            // await chats.Delete(sessionId);
             try
             {
                 var chat = await GetAndVerify(tenantId, sessionId);
-                var agent = await factory.GetBedrockAgentRuntimeAsync(chat.TenantId);
-                var response = await agent.EndSessionAsync(new EndSessionRequest() {
-                    SessionIdentifier = sessionId
-                });
+                
+                // For AgentCore Runtime, session cleanup is handled by the runtime
+                // when the session TTL expires. We just update our local state.
                 chat.SessionStatus = "Ended";
                 await chats.Put(sessionId, chat);
-                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK){
-                    return Results.Ok();
-                }
-                else {
-                    return Results.Problem($"Unable to end session {sessionId}");
-                }
+                return Results.Ok();
             }
 
             catch (ResourceNotFoundException)
@@ -263,7 +225,6 @@ namespace ApiHandlers
                 logger.LogError(e, "Failed to end this session {sessionId}", sessionId);
                 return Results.Problem();
             }       
-            
         }
     }
 }

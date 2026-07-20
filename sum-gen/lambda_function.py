@@ -232,7 +232,7 @@ def format_bedrock_response(lambda_event: Dict[str, Any], response: Dict[str, An
 
         try:
             body = {
-                # "summary_text": response.get("output", {}).get("text", ""),
+                "summary_text": response.get("output", {}).get("text", ""),
                 "chunks": [create_chunk_data(chunk) for chunk in response.get("citations", [])],
             }
             if response.get("guardrailAction") == "INTERVENED":

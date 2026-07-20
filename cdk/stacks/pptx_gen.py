@@ -110,14 +110,14 @@ def create_pptx_lambda(self: Stack, bucket, guardrail_id: str = "", guardrail_ve
         handler       = _lambda.Handler.FROM_IMAGE,
         runtime       = _lambda.Runtime.FROM_IMAGE,
         environment   = {
-            "MODEL_ID": agent_inference_profile_arn,
+            "MODEL_ID": agent_inference_profile_id,
             "IMAGE_MODEL_ID": image_generation_env_value,
-            "S3_BUCKET":bucket,
+            "S3_BUCKET": bucketDev,
             "GUARDRAIL_ID": guardrail_id,
             "GUARDRAIL_VERSION": guardrail_version
         },
         memory_size   = 900,
-        timeout       = Duration.seconds(300),
+        timeout       = Duration.seconds(900),
         reserved_concurrent_executions=50,
         tracing       = _lambda.Tracing.ACTIVE,
         vpc           = vpc,
@@ -216,7 +216,7 @@ def create_pptx_lambda(self: Stack, bucket, guardrail_id: str = "", guardrail_ve
                         "s3:GetObject"
                     ],
                     resources=[
-                        f"arn:{Aws.PARTITION}:s3:::{bucketDev}/presentations/*"
+                        f"arn:{Aws.PARTITION}:s3:::{bucketDev}/*"
                     ]
                 )
             ])
@@ -263,8 +263,8 @@ def create_pptx_lambda(self: Stack, bucket, guardrail_id: str = "", guardrail_ve
         role=function.role,
         tracing=_lambda.Tracing.ACTIVE,
         environment   = {
-            "MODEL_ID": agent_inference_profile_arn,
-            "S3_BUCKET":bucket,
+            "MODEL_ID": agent_inference_profile_id,
+            "S3_BUCKET": bucketDev,
             "AWS_LAMBDA_HANDLER_LOG_LEVEL":"Trace",
             "GUARDRAIL_ID": guardrail_id,
             "GUARDRAIL_VERSION": guardrail_version
