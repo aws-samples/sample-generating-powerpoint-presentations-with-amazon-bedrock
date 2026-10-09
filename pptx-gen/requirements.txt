@@ -5,7 +5,7 @@ jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
 lxml==5.3.0
 numpy==2.2.2
-pillow==11.1.0
+pillow==12.3.0
 python-pptx==1.0.2
 requests==2.32.3
 requests-toolbelt==1.0.0
